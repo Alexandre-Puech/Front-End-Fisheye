@@ -38,12 +38,48 @@ h1 {
   flex-direction: column;
 }
 
+.photographer_section .lien {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.photographer_section .cardText {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
 .photographer_section article h2 {
   color: #d3573c;
   font-size: 36px;
+  margin: 0%;
+  text-wrap: nowrap;
 }
 
 .photographer_section article img {
   height: 200px;
   width: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.photographer_section .cardText h3 {
+  color: #901c1c;
+  font-weight: 400;
+  font-size: 0.8rem;
+  margin: 0%;
+}
+
+.photographer_section .cardText .slogan {
+  font-size: 0.62rem;
+  margin: 0%;
+}
+
+.photographer_section .cardText .cost {
+  font-size: 0.56rem;
+  color: #757575;
+  margin: 0%;
 }
