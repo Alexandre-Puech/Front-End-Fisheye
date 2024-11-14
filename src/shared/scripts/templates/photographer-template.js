@@ -16,7 +16,7 @@ function photographerTemplate(data) {
 
     const img = document.createElement("img");
     img.setAttribute("src", picture);
-    img.setAttribute("alt", name);
+    img.setAttribute("alt", "");
 
     const h2 = document.createElement("h2");
     h2.textContent = name;
@@ -44,5 +44,47 @@ function photographerTemplate(data) {
     return article;
   }
 
-  return { name, picture, getUserCardDOM };
+  function getUserCardProfileDOM() {
+    const article = document.createElement("article");
+
+    const cardText = document.createElement("div");
+    cardText.classList.add("description");
+    cardText.setAttribute("aria-label", `description de ${name}`);
+
+    const h2 = document.createElement("h2");
+    h2.textContent = name;
+    const location = document.createElement("h3");
+    location.textContent = `${city}, ${country}`;
+    const slogan = document.createElement("p");
+    slogan.textContent = tagline;
+    slogan.classList.add("slogan");
+
+    const contactButton = document.createElement("button");
+    contactButton.classList.add("contact_button");
+    contactButton.textContent = "Contactez moi";
+    contactButton.onclick = "displayModal()";
+
+    const img = document.createElement("img");
+    img.setAttribute("src", picture);
+    img.setAttribute("alt", name);
+
+    const encart = document.createElement("div");
+    encart.classList.add("encart");
+    const cost = document.createElement("p");
+    cost.textContent = `${price}€/jour`;
+    cost.classList.add("cost");
+    encart.appendChild(cost);
+
+    cardText.appendChild(h2);
+    cardText.appendChild(location);
+    cardText.appendChild(slogan);
+    article.appendChild(cardText);
+    article.appendChild(contactButton);
+    article.appendChild(img);
+    article.appendChild(encart);
+
+    return article;
+  }
+
+  return { name, picture, getUserCardDOM, getUserCardProfileDOM };
 }
