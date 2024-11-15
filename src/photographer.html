@@ -24,16 +24,62 @@
     </main>
     <div id="contact_modal">
       <div class="modal">
-        <header>
-          <h2>Contactez-moi</h2>
-          <img src="assets/icons/close.svg" onclick="closeModal()" />
-        </header>
-        <form>
-          <div>
-            <label>Prénom</label>
-            <input />
+        <header id="modalHeader"></header>
+        <form id="form">
+          <div
+            class="formData"
+            data-error="Veuillez entrer au moins deux caractères"
+            data-error-visible="false"
+          >
+            <label for="first">Prénom</label><br />
+            <input
+              class="text-control"
+              type="text"
+              id="first"
+              name="first"
+            /><br />
           </div>
-          <button class="contact_button">Envoyer</button>
+          <div
+            class="formData"
+            data-error="Veuillez entrer au moins deux caractères"
+            data-error-visible="false"
+          >
+            <label for="last">Nom</label><br />
+            <input
+              class="text-control"
+              type="text"
+              id="last"
+              name="last"
+            /><br />
+          </div>
+          <div
+            class="formData"
+            data-error="Veuillez entrer une adresse mail valide (format: *@*.*)"
+            data-error-visible="false"
+          >
+            <label for="email">E-mail</label><br />
+            <input
+              class="text-control"
+              type="email"
+              id="email"
+              name="email"
+            /><br />
+          </div>
+          <div
+            class="formData"
+            data-error="Veuillez entrer votre message"
+            data-error-visible="false"
+          >
+            <label for="message">Votre message</label>
+            <textarea
+              class="text-control"
+              id="message"
+              name="message"
+              rows="5"
+              columns="200"
+            ></textarea>
+          </div>
+          <button class="contact_button" id="buttonSend">Envoyer</button>
         </form>
       </div>
     </div>
