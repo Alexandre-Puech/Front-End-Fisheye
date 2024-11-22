@@ -1,12 +1,30 @@
 function displayModal() {
   const modal = document.getElementById("contact_modal");
   modal.style.display = "block";
+  modal.setAttribute("tabindex", "-1");
+  modal.focus();
   createModalHeaderName();
+  const mediaContainers = document.querySelectorAll(".media-item");
+  mediaContainers.forEach((mediaContainer) => {
+    mediaContainer.setAttribute("tabindex", "-1");
+  });
+  document.addEventListener("keydown", handleEscapeKey);
 }
 
 function closeModal() {
   const modal = document.getElementById("contact_modal");
   modal.style.display = "none";
+  const mediaContainers = document.querySelectorAll(".media-item");
+  mediaContainers.forEach((mediaContainer) => {
+    mediaContainer.setAttribute("tabindex", "0");
+  });
+  document.removeEventListener("keydown", handleEscapeKey);
+}
+
+function handleEscapeKey(event) {
+  if (event.key === "Escape") {
+    closeModal();
+  }
 }
 
 async function getPhotographerName() {
@@ -103,8 +121,6 @@ form.addEventListener("submit", (event) => {
     formData.forEach((value, key) => {
       userData[key] = value;
     });
-
-    // Affiche les données saisies par l'utilisateur
     console.log("Données du formulaire :", userData);
     form.reset();
   }

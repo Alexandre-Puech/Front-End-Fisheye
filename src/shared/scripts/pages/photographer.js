@@ -33,6 +33,8 @@ class MediaFactory {
 
     const mediaContainer = document.createElement("div");
     mediaContainer.classList.add("media-item");
+    mediaContainer.setAttribute("tabindex", "0");
+    mediaContainer.setAttribute("aria-label", title);
 
     let mediaElement;
     if (image) {
@@ -52,6 +54,14 @@ class MediaFactory {
       const mediaArray = getPhotographerMediaArray();
       const currentIndex = mediaArray.indexOf(this.mediaData);
       this.openLightbox(mediaArray, currentIndex);
+    });
+
+    mediaContainer.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        const mediaArray = getPhotographerMediaArray();
+        const currentIndex = mediaArray.indexOf(this.mediaData);
+        this.openLightbox(mediaArray, currentIndex);
+      }
     });
 
     mediaContainer.appendChild(mediaElement);
@@ -123,14 +133,36 @@ function createLightbox(mediaArray, currentIndex) {
     nextButton.addEventListener("click", () => navigateLightbox(mediaArray, 1));
     lightbox.appendChild(nextButton);
   }
+  function handleKeyboardNavigation(event) {
+    switch (event.key) {
+      case "Escape":
+        closeLightbox();
+        break;
+      case "ArrowLeft":
+        navigateLightbox(mediaArray, -1);
+        break;
+      case "ArrowRight":
+        navigateLightbox(mediaArray, 1);
+        break;
+    }
+  }
+  function enableKeyboardNavigation() {
+    document.addEventListener("keydown", handleKeyboardNavigation);
+  }
 
   showLightboxMedia(mediaArray, currentIndex);
+  enableKeyboardNavigation();
+}
+
+function disableKeyboardNavigation() {
+  document.removeEventListener("keydown", handleKeyboardNavigation);
 }
 
 function closeLightbox() {
   const lightbox = document.querySelector("#lightbox");
   if (lightbox) {
     lightbox.style.display = "none";
+    disableKeyboardNavigation();
   }
 }
 
