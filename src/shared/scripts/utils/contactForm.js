@@ -49,8 +49,6 @@ async function createModalHeaderName() {
   }
 }
 
-const modalBody = document.querySelector(".modal");
-const formData = document.querySelectorAll(".formData");
 const balisePrenom = document.getElementById("first");
 const prenomParent = balisePrenom.closest(".formData");
 const baliseNom = document.getElementById("last");
@@ -60,7 +58,6 @@ const emailParent = baliseEmail.closest(".formData");
 const baliseMessage = document.getElementById("message");
 const messageParent = baliseMessage.closest(".formData");
 const form = document.getElementById("form");
-const btnSubmit = document.getElementById("buttonSend");
 
 function validerPrenom() {
   const prenom = balisePrenom.value;

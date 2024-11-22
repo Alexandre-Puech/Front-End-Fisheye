@@ -293,3 +293,36 @@ document.addEventListener("DOMContentLoaded", async function () {
     displayTotalLikes();
   }, 200);
 });
+
+const popularityFilter = document.querySelector(".filter__popularity");
+popularityFilter.addEventListener("click", function () {
+  const mediaElements = Array.from(document.querySelectorAll(".media-item"));
+  mediaElements.sort((a, b) => {
+    const likesA = parseInt(a.querySelector(".likeNumber").textContent);
+    const likesB = parseInt(b.querySelector(".likeNumber").textContent);
+    return likesB - likesA;
+  });
+  const mediaContainer = document.querySelector(".media-container");
+  mediaContainer.innerHTML = "";
+  mediaElements.forEach((mediaElement) => {
+    mediaContainer.appendChild(mediaElement);
+  });
+});
+
+const titleFilter = document.querySelector(".filter__title");
+
+titleFilter.addEventListener("click", function () {
+  const mediaElements = Array.from(document.querySelectorAll(".media-item"));
+  mediaElements.sort((a, b) => {
+    const titleA = a.querySelector(".mediaTitle").textContent.toLowerCase();
+    const titleB = b.querySelector(".mediaTitle").textContent.toLowerCase();
+    if (titleA < titleB) return -1;
+    if (titleA > titleB) return 1;
+    return 0;
+  });
+  const mediaContainer = document.querySelector(".media-container");
+  mediaContainer.innerHTML = "";
+  mediaElements.forEach((mediaElement) => {
+    mediaContainer.appendChild(mediaElement);
+  });
+});
