@@ -24,26 +24,37 @@ class MediaFactory {
     this.mediaData = mediaData;
   }
 
+  openLightbox(mediaArray, index) {
+    createLightbox(mediaArray, index);
+  }
+
   createMediaElement() {
     const { image, video, title, likes, date } = this.mediaData;
 
     const mediaContainer = document.createElement("div");
     mediaContainer.classList.add("media-item");
 
+    let mediaElement;
     if (image) {
-      const img = document.createElement("img");
-      img.setAttribute("src", `assets/images/photos/${image}`);
-      img.setAttribute("alt", title);
-      mediaContainer.appendChild(img);
+      mediaElement = document.createElement("img");
+      mediaElement.setAttribute("src", `assets/images/photos/${image}`);
+      mediaElement.setAttribute("alt", title);
     } else if (video) {
-      const videoElement = document.createElement("video");
-      videoElement.setAttribute("controls", "");
+      mediaElement = document.createElement("video");
+      mediaElement.setAttribute("controls", "");
       const source = document.createElement("source");
       source.setAttribute("src", `assets/images/photos/${video}`);
       source.setAttribute("type", "video/mp4");
-      videoElement.appendChild(source);
-      mediaContainer.appendChild(videoElement);
+      mediaElement.appendChild(source);
     }
+    mediaElement.addEventListener("click", () => {
+      const mediaArray = getPhotographerMediaArray();
+      const currentIndex = mediaArray.indexOf(this.mediaData);
+      this.openLightbox(mediaArray, currentIndex);
+    });
+
+    mediaContainer.appendChild(mediaElement);
+
     const mediaContent = document.createElement("div");
     mediaContent.classList.add("mediaContent");
     const mediaTitle = document.createElement("p");
@@ -75,15 +86,112 @@ async function getMediaData() {
   return data.media;
 }
 
+function createLightbox(mediaArray, currentIndex) {
+  let lightbox = document.querySelector("#lightbox");
+  if (!lightbox) {
+    lightbox = document.createElement("div");
+    lightbox.id = "lightbox";
+    lightbox.classList.add("lightbox");
+    document.body.appendChild(lightbox);
+
+    const lightboxContent = document.createElement("div");
+    lightboxContent.classList.add("lightbox-content");
+    lightbox.appendChild(lightboxContent);
+
+    const closeButton = document.createElement("span");
+    closeButton.classList.add("close");
+    closeButton.innerHTML = "Fermer";
+    closeButton.addEventListener("click", closeLightbox);
+    lightbox.appendChild(closeButton);
+
+    const prevButton = document.createElement("a");
+    prevButton.className = "prev";
+    prevButton.innerHTML = "Précédent";
+    prevButton.addEventListener("click", () =>
+      navigateLightbox(mediaArray, -1)
+    );
+    lightbox.appendChild(prevButton);
+
+    const nextButton = document.createElement("a");
+    nextButton.className = "next";
+    nextButton.innerHTML = "Suivant";
+    nextButton.addEventListener("click", () => navigateLightbox(mediaArray, 1));
+    lightbox.appendChild(nextButton);
+  }
+
+  showLightboxMedia(mediaArray, currentIndex);
+}
+
+function closeLightbox() {
+  const lightbox = document.querySelector("#lightbox");
+  if (lightbox) {
+    lightbox.style.display = "none";
+  }
+}
+
+let currentMediaIndex = 0;
+
+function showLightboxMedia(mediaArray, index) {
+  currentMediaIndex = index;
+  const lightboxContent = document.querySelector(".lightbox-content");
+  if (!lightboxContent) return;
+
+  lightboxContent.innerHTML = "";
+
+  const media = mediaArray[index];
+
+  let mediaElement;
+  if (media.image) {
+    mediaElement = document.createElement("img");
+    mediaElement.setAttribute("src", `assets/images/photos/${media.image}`);
+    mediaElement.setAttribute("alt", media.title);
+  } else if (media.video) {
+    mediaElement = document.createElement("video");
+    mediaElement.setAttribute("controls", "");
+    const source = document.createElement("source");
+    source.setAttribute("src", `assets/images/photos/${media.video}`);
+    source.setAttribute("type", "video/mp4");
+    mediaElement.appendChild(source);
+  }
+
+  const mediaTitle = document.createElement("p");
+  mediaTitle.textContent = media.title;
+  mediaTitle.classList.add("mediaTitle");
+
+  lightboxContent.appendChild(mediaElement);
+  lightboxContent.appendChild(mediaTitle);
+
+  const lightbox = document.querySelector("#lightbox");
+  lightbox.style.display = "flex";
+}
+
+function navigateLightbox(mediaArray, direction) {
+  currentMediaIndex += direction;
+
+  if (currentMediaIndex >= mediaArray.length) {
+    currentMediaIndex = 0;
+  } else if (currentMediaIndex < 0) {
+    currentMediaIndex = mediaArray.length - 1;
+  }
+
+  showLightboxMedia(mediaArray, currentMediaIndex);
+}
+
+let photographerMediaArray = [];
+
+function getPhotographerMediaArray() {
+  return photographerMediaArray;
+}
+
 async function displayPhotographerMedia(photographerId) {
   const mediaData = await getMediaData();
-  const photographerMedia = mediaData.filter(
+  photographerMediaArray = mediaData.filter(
     (media) => media.photographerId == photographerId
   );
 
   const mediaGrid = document.querySelector(".media-container");
 
-  photographerMedia.forEach((media) => {
+  photographerMediaArray.forEach((media) => {
     const mediaFactory = new MediaFactory(media);
     const mediaElement = mediaFactory.createMediaElement();
     mediaGrid.appendChild(mediaElement);

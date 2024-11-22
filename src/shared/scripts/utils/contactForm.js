@@ -1,14 +1,12 @@
 function displayModal() {
   const modal = document.getElementById("contact_modal");
   modal.style.display = "block";
-  main.style.display = "none";
   createModalHeaderName();
 }
 
 function closeModal() {
   const modal = document.getElementById("contact_modal");
   modal.style.display = "none";
-  main.style.display = "block";
 }
 
 async function getPhotographerName() {
@@ -98,14 +96,9 @@ function validate() {
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  //checking the value of the function validate
   const isValid = validate();
   if (isValid) {
-    //if true, reset form and use formValide functionS
-
     const formData = new FormData(form);
-
-    // Crée un objet pour stocker les données sous forme clé/valeur
     const userData = {};
     formData.forEach((value, key) => {
       userData[key] = value;

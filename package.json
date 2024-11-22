@@ -1,6 +1,7 @@
 {
   "name": "front-end-fisheye",
   "version": "1.0.0",
+  "type": "module",
   "description": "Rien à installer ici, il suffit d'ouvrir le fichier `index.html`.",
   "main": "src/index.html",
   "scripts": {
