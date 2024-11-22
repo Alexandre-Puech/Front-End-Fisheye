@@ -39,6 +39,7 @@ class MediaFactory {
       mediaElement = document.createElement("img");
       mediaElement.setAttribute("src", `assets/images/photos/${image}`);
       mediaElement.setAttribute("alt", title);
+      mediaElement.classList.add("mediaPic");
     } else if (video) {
       mediaElement = document.createElement("video");
       mediaElement.setAttribute("controls", "");
@@ -68,9 +69,13 @@ class MediaFactory {
     const likeNumber = document.createElement("p");
     likeNumber.classList.add("likeNumber");
     likeNumber.textContent = likes;
-    const likeSymbol = document.createElement("i");
-    likeSymbol.classList.add("fa-solid", "fa-heart");
-    mediaLike.appendChild(likeSymbol);
+    const likeDiv = document.createElement("div");
+    likeDiv.classList.add("likeDiv");
+    const likeSymbol = document.createElement("img");
+    likeSymbol.src = "assets/icons/heart.svg";
+    likeSymbol.classList.add("likeSymbol");
+    likeDiv.appendChild(likeSymbol);
+    mediaLike.appendChild(likeDiv);
     mediaLike.appendChild(likeNumber);
     mediaContent.appendChild(mediaTitle);
     mediaContent.appendChild(mediaDate);
@@ -215,3 +220,44 @@ async function init() {
 }
 
 init();
+
+document.addEventListener("DOMContentLoaded", async function () {
+  setTimeout(() => {
+    const likeDivs = document.querySelectorAll(".mediaLike");
+
+    function calculateTotalLikes() {
+      const allLikeCounts = document.querySelectorAll(".likeNumber");
+      let totalLikes = 0;
+      allLikeCounts.forEach((likeCount) => {
+        totalLikes += parseInt(likeCount.textContent);
+      });
+      return totalLikes;
+    }
+    function displayTotalLikes() {
+      const totalLikesElement = document.querySelector(".globalLikes");
+      if (totalLikesElement) {
+        totalLikesElement.textContent = `${calculateTotalLikes()}`;
+      }
+    }
+    likeDivs.forEach((div) => {
+      const likeButton = div.querySelector(".likeDiv");
+      const likeCount = div.querySelector(".likeNumber");
+
+      likeButton.addEventListener("click", function () {
+        if (!likeButton.classList.contains("liked")) {
+          let currentCount = parseInt(likeCount.textContent);
+          currentCount += 1;
+          likeCount.textContent = currentCount;
+          likeButton.classList.add("liked");
+        } else if (likeButton.classList.contains("liked")) {
+          let currentCount = parseInt(likeCount.textContent);
+          currentCount -= 1;
+          likeCount.textContent = currentCount;
+          likeButton.classList.remove("liked");
+        }
+        displayTotalLikes();
+      });
+    });
+    displayTotalLikes();
+  }, 200);
+});

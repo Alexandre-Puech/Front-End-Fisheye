@@ -73,7 +73,19 @@ function photographerTemplate(data) {
     const cost = document.createElement("p");
     cost.textContent = `${price}€/jour`;
     cost.classList.add("cost");
+    const heart = document.createElement("img");
+    heart.src = "assets/icons/heart2.svg";
+    heart.alt = "Heart Icon";
+    heart.classList.add("heartIcon");
+    const globalLikes = document.createElement("p");
+    globalLikes.classList.add("globalLikes");
+    globalLikes.textContent = "0";
+    const totalLikes = document.createElement("div");
+    totalLikes.classList.add("totalLikes");
+    totalLikes.appendChild(heart);
+    totalLikes.appendChild(globalLikes);
     encart.appendChild(cost);
+    encart.appendChild(totalLikes);
 
     cardText.appendChild(h2);
     cardText.appendChild(location);

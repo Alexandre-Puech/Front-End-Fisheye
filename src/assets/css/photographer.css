@@ -132,11 +132,32 @@ form input {
   right: 0;
   background-color: #db8876;
   justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row-reverse;
 }
-.photograph-header .encart p {
+.photograph-header .encart .cost {
   font-weight: 500;
   font-size: 1.5rem;
   margin: 18px 35px;
+  color: black;
+}
+.photograph-header .encart .heartIcon {
+  width: 21px;
+  height: 24px;
+}
+
+.photograph-header .encart .totalLikes {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-left: 31px;
+}
+
+.photograph-header .encart .globalLikes {
+  font-size: 1.5rem;
   color: black;
 }
 
@@ -147,13 +168,15 @@ form input {
   grid-row-gap: 20px;
   grid-column-gap: 90px;
   margin: 58px 100px;
+  justify-content: center;
+  align-items: center;
 }
 
 .media-container .media-item {
   display: flex;
   flex-direction: column;
 }
-.media-container .media-item img {
+.media-container .media-item .mediaPic {
   object-fit: cover;
   height: 300px;
   border-radius: 5px;
@@ -186,8 +209,9 @@ form input {
   font-size: 1.5rem;
 }
 
-.mediaLike i {
-  font-size: 1.25rem;
+.mediaLike .likeSymbol {
+  width: 17.5px;
+  height: 18.35px;
   margin-left: 5px;
 }
 
