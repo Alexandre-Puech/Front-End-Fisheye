@@ -1,5 +1,3 @@
-//Mettre le code JavaScript lié à la page photographer.html
-
 function getPhotographerIdFromURL() {
   const params = new URLSearchParams(window.location.search);
   return params.get("id");
@@ -84,6 +82,7 @@ class MediaFactory {
     const likeSymbol = document.createElement("img");
     likeSymbol.src = "assets/icons/heart.svg";
     likeSymbol.classList.add("likeSymbol");
+    likeSymbol.setAttribute("alt", "likes");
     likeDiv.appendChild(likeSymbol);
     mediaLike.appendChild(likeDiv);
     mediaLike.appendChild(likeNumber);
@@ -113,11 +112,11 @@ function createLightbox(mediaArray, currentIndex) {
     lightboxContent.classList.add("lightbox-content");
     lightbox.appendChild(lightboxContent);
 
-    const closeButton = document.createElement("span");
-    closeButton.classList.add("close");
+    const closeButton = document.createElement("a");
+    closeButton.className = "close";
     closeButton.innerHTML = "Fermer";
     closeButton.addEventListener("click", closeLightbox);
-    lightbox.appendChild(closeButton);
+    lightboxContent.appendChild(closeButton);
 
     const prevButton = document.createElement("a");
     prevButton.className = "prev";
@@ -125,13 +124,13 @@ function createLightbox(mediaArray, currentIndex) {
     prevButton.addEventListener("click", () =>
       navigateLightbox(mediaArray, -1)
     );
-    lightbox.appendChild(prevButton);
+    lightboxContent.appendChild(prevButton);
 
     const nextButton = document.createElement("a");
     nextButton.className = "next";
     nextButton.innerHTML = "Suivant";
     nextButton.addEventListener("click", () => navigateLightbox(mediaArray, 1));
-    lightbox.appendChild(nextButton);
+    lightboxContent.appendChild(nextButton);
   }
   function handleKeyboardNavigation(event) {
     switch (event.key) {
@@ -152,17 +151,17 @@ function createLightbox(mediaArray, currentIndex) {
 
   showLightboxMedia(mediaArray, currentIndex);
   enableKeyboardNavigation();
-}
 
-function disableKeyboardNavigation() {
-  document.removeEventListener("keydown", handleKeyboardNavigation);
-}
+  function disableKeyboardNavigation() {
+    document.removeEventListener("keydown", handleKeyboardNavigation);
+  }
 
-function closeLightbox() {
-  const lightbox = document.querySelector("#lightbox");
-  if (lightbox) {
-    lightbox.style.display = "none";
-    disableKeyboardNavigation();
+  function closeLightbox() {
+    const lightbox = document.querySelector("#lightbox");
+    if (lightbox) {
+      lightbox.style.display = "none";
+      disableKeyboardNavigation();
+    }
   }
 }
 
@@ -173,7 +172,8 @@ function showLightboxMedia(mediaArray, index) {
   const lightboxContent = document.querySelector(".lightbox-content");
   if (!lightboxContent) return;
 
-  lightboxContent.innerHTML = "";
+  const mediaElements = lightboxContent.querySelectorAll("img, video, p");
+  mediaElements.forEach((element) => element.remove());
 
   const media = mediaArray[index];
 
@@ -295,6 +295,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 const popularityFilter = document.querySelector(".filter__popularity");
+
 popularityFilter.addEventListener("click", function () {
   const mediaElements = Array.from(document.querySelectorAll(".media-item"));
   mediaElements.sort((a, b) => {
@@ -325,4 +326,17 @@ titleFilter.addEventListener("click", function () {
   mediaElements.forEach((mediaElement) => {
     mediaContainer.appendChild(mediaElement);
   });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const filterSelect = document.getElementById("filter");
+
+  if (filterSelect) {
+    filterSelect.addEventListener("keydown", (event) => {
+      if (event.code === "Enter" || event.key === "Enter") {
+        event.preventDefault();
+        filterSelect.click();
+      }
+    });
+  }
 });
