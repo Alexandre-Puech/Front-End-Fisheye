@@ -38,7 +38,7 @@ class MediaFactory {
     if (image) {
       mediaElement = document.createElement("img");
       mediaElement.setAttribute("src", `assets/images/photos/${image}`);
-      mediaElement.setAttribute("alt", title);
+      mediaElement.setAttribute("alt", `${title}, closeup view`);
       mediaElement.classList.add("mediaPic");
     } else if (video) {
       mediaElement = document.createElement("video");
@@ -114,12 +114,14 @@ function createLightbox(mediaArray, currentIndex) {
 
     const closeButton = document.createElement("a");
     closeButton.className = "close";
+    closeButton.setAttribute("aria-label", "Close lightbox");
     closeButton.innerHTML = "Fermer";
     closeButton.addEventListener("click", closeLightbox);
     lightboxContent.appendChild(closeButton);
 
     const prevButton = document.createElement("a");
     prevButton.className = "prev";
+    prevButton.setAttribute("aria-label", "Previous image");
     prevButton.innerHTML = "Précédent";
     prevButton.addEventListener("click", () =>
       navigateLightbox(mediaArray, -1)
@@ -128,6 +130,7 @@ function createLightbox(mediaArray, currentIndex) {
 
     const nextButton = document.createElement("a");
     nextButton.className = "next";
+    nextButton.setAttribute("aria-label", "Next images");
     nextButton.innerHTML = "Suivant";
     nextButton.addEventListener("click", () => navigateLightbox(mediaArray, 1));
     lightboxContent.appendChild(nextButton);
@@ -302,6 +305,26 @@ popularityFilter.addEventListener("click", function () {
     const likesA = parseInt(a.querySelector(".likeNumber").textContent);
     const likesB = parseInt(b.querySelector(".likeNumber").textContent);
     return likesB - likesA;
+  });
+  const mediaContainer = document.querySelector(".media-container");
+  mediaContainer.innerHTML = "";
+  mediaElements.forEach((mediaElement) => {
+    mediaContainer.appendChild(mediaElement);
+  });
+});
+
+const dateFilter = document.querySelector(".filter__date");
+
+dateFilter.addEventListener("click", function () {
+  const mediaElements = Array.from(document.querySelectorAll(".media-item"));
+  mediaElements.sort((a, b) => {
+    const dateA = new Date(
+      a.querySelector(".mediaDate").getAttribute("datetime")
+    );
+    const dateB = new Date(
+      b.querySelector(".mediaDate").getAttribute("datetime")
+    );
+    return dateB - dateA;
   });
   const mediaContainer = document.querySelector(".media-container");
   mediaContainer.innerHTML = "";

@@ -54,6 +54,7 @@ body {
 
 .modal header img {
   cursor: pointer;
+  filter: brightness(100);
 }
 
 .modal header h2 {
@@ -378,6 +379,10 @@ label {
   margin-left: 100px;
 }
 
+form label {
+  margin-left: 0px;
+}
+
 #filter {
   width: 170px;
   height: 69px;
@@ -386,4 +391,5 @@ label {
   font-size: 1.125rem;
   font-weight: 700;
   padding-left: 20px;
+  margin-left: 22px;
 }
